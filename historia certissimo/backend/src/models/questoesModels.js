@@ -1,0 +1,63 @@
+const pool = require('../config/databese'); // Importa a conexão com o banco
+
+const buscarComFiltros = async (filtros) => {
+  const { vestibular, ano, topico, dificuldade } = filtros; // Recebe os filtros
+
+  // CORREÇÃO AQUI: Mudamos "a.correta" para "a.correta AS letra_correta" para o React reconhecer o gabarito.
+  // Também adicionamos o filtro na linha do JOIN para trazer apenas a alternativa que for a certa.
+  let query = `
+    SELECT
+      q.id_questao,
+      q.enunciado,
+      q.dificuldade,
+      v.nome_vestibular,
+      v.ano,
+      t.nome_topico,
+      a.texto AS texto_correto,
+      a.correta AS letra_correta, -- <-- O segredo estava aqui! Dando o apelido que o Front-end espera
+      a.comentario
+    FROM questoes q
+    JOIN vestibular v
+      ON q.id_vestibular = v.id_vestibular
+    JOIN topicos t
+      ON q.id_topico = t.id_topico
+    LEFT JOIN alternativa a
+      ON a.id_questao = q.id_questao AND a.correta IS NOT NULL -- <-- Traz apenas a alternativa que é o gabarito
+    WHERE 1=1
+  `; // Monta a consulta inicial
+
+  const params = []; // Armazena os parâmetros
+  let counter = 1; // Controla a posição dos parâmetros
+
+  if (vestibular) {
+    query += ` AND LOWER(v.nome_vestibular) = LOWER($${counter})`; // Filtra por vestibular
+    params.push(vestibular);
+    counter++;
+  }
+
+  if (ano) {
+    query += ` AND v.ano = $${counter}`; // Filtra por ano
+    params.push(parseInt(ano));
+    counter++;
+  }
+
+  if (topico) {
+    query += ` AND LOWER(t.nome_topico) = LOWER($${counter})`; // Filtra por tópico
+    params.push(topico);
+    counter++;
+  }
+
+  if (dificuldade) {
+    query += ` AND LOWER(q.dificuldade) = LOWER($${counter})`; // Filtra por dificuldade
+    params.push(dificuldade);
+    counter++;
+  }
+
+  query += ` ORDER BY q.id_questao ASC`; // Ordena pelo ID
+
+  const resultado = await pool.query(query, params); // Executa a consulta
+
+  return resultado.rows; // Retorna os resultados
+};
+
+module.exports = { buscarComFiltros }; // Exporta a função

@@ -1,0 +1,69 @@
+/* Container da barra de filtros no topo da página */
+.barra-filtros-topo {
+  background-color: transparent;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* Estilo aplicado a todos os selects (filtros dropdown) */
+.seletor-historico {
+  background-color: #fffaf1;
+  color: #3d2b1f;
+  border: 1px solid #3d2b1f;
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Área principal onde ficam as questões */
+.conteudo-questoes {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Área do título do caderno */
+.titulo-caderno {
+  margin-bottom: 30px;
+  border-left: 6px solid #e67e22;
+  padding-left: 15px;
+}
+
+/* Texto do título */
+.titulo-caderno-texto {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Mensagem exibida quando nenhuma questão é encontrada */
+.mensagem-sem-questoes {
+  text-align: center;
+  padding: 50px 0;
+  border: 2px dashed #e4d8c1;
+  background: #fffaf1;
+}
+
+/* Botão de corrigir o simulado */
+.botao-corrigir {
+  background: #e67e22;
+  color: white;
+  border: none;
+  padding: 18px;
+  font-size: 1.2em;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+/* Efeito ao passar o mouse */
+.botao-corrigir:hover {
+  background: #d46f15;
+}
